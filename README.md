@@ -76,4 +76,43 @@ NVRAM:
     + debug=0x100, alcid=1, unfairgva=1 (Used for fixing hardware DRM support on supported AMD GPUs), wegnoegpu (use this if you have a unsupported dedicated GPU, and want to use only your iGPU)
     + prev-lang:kbd: change to 656e2d55533a30 (Russian moment, this will change your installer language to English)
 PlatformInfo:
-  + For setting up the SMBIOS, , we'll use CorpNewt's GenSMBIOS (opens new window)application.
+  + For setting up the SMBIOS, , we'll use CorpNewt's GenSMBIOS application. Coffee Lake systems have 2 main SMBIOS: iMac19,1 for Mojave and newer, iMac18,3 for High Sierra and older.
+    - Run GenSMBIOS, pick option 1 for downloading MacSerial and Option 3 for selecting out SMBIOS. This will give us an output similar to the following
+  
+  | iMac19,1 SMBIOS Info |                                      |  
+  | ---------------------| -------------------------------------|
+  | Type                 | iMac19,1                             |
+  | Serial               | C02XG0FDH7JY                         |
+  | Board Serial         | C02839303QXH69FJA                    |
+  | SmUUID               | DBB364D6-44B2-4A02-B922-AB4396F16DA8 |
+  | Apple ROM            | 11223300 0000                        |
+  
+  (DO NOT COPY THIS! THIS SMBIOS IS JUST AN EXAMPLE)
+
+The Type part gets copied to Generic -> SystemProductName.
+The Serial part gets copied to Generic -> SystemSerialNumber.
+The Board Serial part gets copied to Generic -> MLB.
+The SmUUID part gets copied to Generic -> SystemUUID.
+
+- UEFI: nothing to change here
+
+## That's it, you have created an EFI for your system, now you just have to change some settings in BIOS
+Things to disable:
+  - Fast Boot
+  - Secure Boot
+  - Serial/COM Port
+  - Parallel Port
+  - Compatibility Support Module (CSM) (Must be off in most cases, GPU errors/stalls like gIO are common when this option is enabled)
+  - Thunderbolt (For initial install, as Thunderbolt can cause issues if not setup correctly)
+  - Intel SGX
+  - Intel Platform Trust
+  - CFG Lock
+Things to enable:
+- VT-x
+- Above 4G Decoding
+- Hyper-Threading
+- Execute Disable Bit
+- EHCI/XHCI Hand-off
+- OS type: Windows 8.1/10 UEFI Mode (some motherboards may require "Other OS" instead)
+- DVMT Pre-Allocated(iGPU Memory): 64MB or higher (only enable this if you want to use your iGPU to drive a display)
+- SATA Mode: AHCI

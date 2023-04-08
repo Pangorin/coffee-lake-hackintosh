@@ -90,8 +90,11 @@ PlatformInfo:
   (DO NOT COPY THIS! THIS SMBIOS IS JUST AN EXAMPLE)
 
 The Type part gets copied to Generic -> SystemProductName.
+
 The Serial part gets copied to Generic -> SystemSerialNumber.
+
 The Board Serial part gets copied to Generic -> MLB.
+
 The SmUUID part gets copied to Generic -> SystemUUID.
 
 - UEFI: nothing to change here
